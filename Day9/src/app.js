@@ -13,7 +13,7 @@ app.post("/notes",async (req,res)=>{
         title , description
     })
 
-    res.send(200).json({
+    res.send(201).json({
         message: "Note is created successfully",
         note
     })
@@ -22,7 +22,7 @@ app.post("/notes",async (req,res)=>{
 app.get("/notes",async (req,res)=>{
     const notes = await noteModel.find()
 
-    res.status(201).json({
+    res.status(200).json({
         message: "Note fetched successfully",
         notes
     })
