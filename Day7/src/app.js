@@ -16,7 +16,6 @@ app.post("/notes",async (req,res)=>{
 
     const note = await noteModel.create({
         title , description
-
     })
 
     res.status(201).json({
