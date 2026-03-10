@@ -3,28 +3,32 @@ const cors = require("cors")
 const path = require("path")
 
 const app = express()
+
 app.use(cors())
 app.use(express.json())
-//Use of static lets the user access the data or file of the related path
-app.use(express.static("./public"))
 
+// Use of static lets the user access the data or file of the related path
+app.use(express.static("./public"))
 
 const noteModel = require("./models/noteModel")
 
-app.post("/notes",async (req,res)=>{
-    const {title , description} = req.body
+/* Create Note */
+app.post("/api/notes", async (req, res) => {
+    const { title, description } = req.body
 
     const note = await noteModel.create({
-        title , description
+        title,
+        description
     })
 
-    res.send(201).json({
+    res.status(201).json({
         message: "Note is created successfully",
         note
     })
 })
 
-app.get("/notes",async (req,res)=>{
+/* Get All Notes */
+app.get("/api/notes", async (req, res) => {
     const notes = await noteModel.find()
 
     res.status(200).json({
@@ -33,10 +37,10 @@ app.get("/notes",async (req,res)=>{
     })
 })
 
-/* delete note with the id from req params*/
-app.delete("/notes/:id",async (req,res)=>{
-    const id  = req.params.id
-        
+/* Delete note with the id from req params */
+app.delete("/api/notes/:id", async (req, res) => {
+    const id = req.params.id
+
     await noteModel.findByIdAndDelete(id)
 
     res.status(200).json({
@@ -44,26 +48,21 @@ app.delete("/notes/:id",async (req,res)=>{
     })
 })
 
-
 /* Patch api */
+app.patch("/api/notes/:id", async (req, res) => {
+    const id = req.params.id
+    const { title, description } = req.body
 
-app.patch("/notes/:id",async (req,res)=>{
-    const  id = req.params.id
-    const{title,description} = req.body
-
-    await noteModel.findByIdAndUpdate(id, {title,description})
+    await noteModel.findByIdAndUpdate(id, { title, description })
 
     res.status(200).json({
-        messsage:"data updated successfully",
-        
+        messsage: "data updated successfully"
     })
-    
 })
 
-app.use('*name',(req,res)=>{
-    res.sendFile(path.join(__dirname,"..","/public/index.html"))
+/* Serve frontend */
+app.use("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "..", "public", "index.html"))
 })
 
 module.exports = app
-
-/*  */
