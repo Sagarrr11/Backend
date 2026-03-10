@@ -5,6 +5,7 @@ const path = require("path")
 const app = express()
 app.use(cors())
 app.use(express.json())
+//Use of static lets the user access the data or file of the related path
 app.use(express.static("./public"))
 
 
