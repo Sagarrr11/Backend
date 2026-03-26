@@ -6,7 +6,7 @@ const App = () => {
   console.log("hello integration")
 
   function fetchNotes(){
-    axios.get('https://backend-2-jgvm.onrender.com/api/notes')
+    axios.get('http://localhost:3000/notes/')
     .then((res)=>{
       setNotes(res.data.notes)
     })
@@ -21,7 +21,7 @@ const App = () => {
     const {title, description} = e.target.elements
 
     console.log(title.value,description.value)
-    axios.post("https://backend-2-jgvm.onrender.com/api/notes",{
+    axios.post("http://localhost:3000/notes/",{
       title: title.value,
       description: description.value
     })
@@ -32,7 +32,7 @@ const App = () => {
   }
 
   function handleDelete(noteId){
-   axios.delete("https://backend-2-jgvm.onrender.com/api/notes/"+noteId)
+   axios.delete("http://localhost:3000/notes/"+noteId)
    .then(res=>{
     console.log(res.data)
     fetchNotes()

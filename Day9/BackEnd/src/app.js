@@ -7,13 +7,13 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-// Use of static lets the user access the data or file of the related path
-app.use(express.static("./public"))
+// ✅ FIXED PATH
+app.use(express.static(path.join(__dirname, "../public")))
 
 const noteModel = require("./models/noteModel")
 
 /* Create Note */
-app.post("/api/notes", async (req, res) => {
+app.post("/notes", async (req, res) => {
     const { title, description } = req.body
 
     const note = await noteModel.create({
@@ -28,7 +28,7 @@ app.post("/api/notes", async (req, res) => {
 })
 
 /* Get All Notes */
-app.get("/api/notes", async (req, res) => {
+app.get("/notes", async (req, res) => {
     const notes = await noteModel.find()
 
     res.status(200).json({
@@ -38,7 +38,7 @@ app.get("/api/notes", async (req, res) => {
 })
 
 /* Delete note with the id from req params */
-app.delete("/api/notes/:id", async (req, res) => {
+app.delete("/notes/:id", async (req, res) => {
     const id = req.params.id
 
     await noteModel.findByIdAndDelete(id)
@@ -49,7 +49,7 @@ app.delete("/api/notes/:id", async (req, res) => {
 })
 
 /* Patch api */
-app.patch("/api/notes/:id", async (req, res) => {
+app.patch("/notes/:id", async (req, res) => {
     const id = req.params.id
     const { title, description } = req.body
 
@@ -61,7 +61,7 @@ app.patch("/api/notes/:id", async (req, res) => {
 })
 
 /* Serve frontend */
-app.use("*", (req, res) => {
+app.use((req, res) => {
     res.sendFile(path.join(__dirname, "..", "public", "index.html"))
 })
 
